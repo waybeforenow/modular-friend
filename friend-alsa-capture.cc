@@ -1,14 +1,15 @@
 #include "friend-alsa-capture.h"
 #include <stdexcept>
 #include "alsa/asoundlib.h"
+#include "friend-defaults.h"
 
 namespace Friend {
 namespace ALSA {
 
 Capture::Capture()
-    : _device_name("XXX"),
-      _sample_rate(44100),
-      _pcm_format(SND_PCM_FORMAT_U16_LE) {
+    : _device_name(FRIEND__ALSA_DEVICE_NAME),
+      _sample_rate(FRIEND__SAMPLE_RATE),
+      _pcm_format(FRIEND__PCM_FORMAT) {
   int err;
   snd_pcm_hw_params_t* hw_params;
 

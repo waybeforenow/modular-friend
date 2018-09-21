@@ -8,16 +8,26 @@ namespace FLAC {
 
 class Encoder : public ::FLAC::Encoder::Stream {
  private:
-  unsigned char* _buffer;
-  int* _buffer_size;
+  FLAC__int32* _buffer;
+  unsigned int* _buffer_size;
+  FLAC__byte* _send_buffer;
+  unsigned int* _send_buffer_size;
+  unsigned int _send_buffer_max_size;
 
  public:
-  Encoder(unsigned char* buffer, int* buffer_size)
-      : _buffer(buffer), _buffer_size(buffer_size) {}
+  Encoder(FLAC__int32* buffer, unsigned int* buffer_size,
+          FLAC__byte* send_buffer, unsigned int* send_buffer_size,
+          unsigned int send_buffer_max_size)
+      : _buffer(buffer),
+        _buffer_size(buffer_size),
+        _send_buffer(send_buffer),
+        _send_buffer_size(send_buffer_size),
+        _send_buffer_max_size(send_buffer_max_size) {}
+
+  using ::FLAC::Encoder::Stream::process_interleaved;
+  bool process_interleaved();
 
  protected:
-  ::FLAC__StreamEncoderReadStatus read_callback(FLAC__byte buffer[],
-                                                size_t* bytes);
   ::FLAC__StreamEncoderWriteStatus write_callback(const FLAC__byte buffer[],
                                                   size_t bytes,
                                                   unsigned samples,

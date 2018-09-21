@@ -8,12 +8,23 @@ namespace FLAC {
 
 class Decoder : public ::FLAC::Decoder::Stream {
  private:
-  unsigned char* _buffer;
-  int* _read_bytes;
+  FLAC__byte* _decode_buffer;
+  unsigned int* _decode_buffer_size;
+  FLAC__int32* _playback_left_buffer;
+  FLAC__int32* _playback_right_buffer;
+  unsigned int* _playback_buffer_size;
+  size_t _playback_buffer_max_size;
 
  public:
-  Decoder(unsigned char* buffer, int* read_bytes)
-      : _buffer(buffer), _read_bytes(read_bytes) {}
+  Decoder(FLAC__byte* decode_buffer, unsigned int* decode_buffer_size,
+          FLAC__int32* playback_left_buffer, FLAC__int32* playback_right_buffer,
+          unsigned int* playback_buffer_size, size_t playback_buffer_max_size)
+      : _decode_buffer(decode_buffer),
+        _decode_buffer_size(decode_buffer_size),
+        _playback_left_buffer(playback_left_buffer),
+        _playback_right_buffer(playback_right_buffer),
+        _playback_buffer_size(playback_buffer_size),
+        _playback_buffer_max_size(playback_buffer_max_size) {}
 
  protected:
   ::FLAC__StreamDecoderReadStatus read_callback(FLAC__byte buffer[],

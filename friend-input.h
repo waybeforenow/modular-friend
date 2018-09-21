@@ -17,11 +17,11 @@ class Input {
   int _socket_fd;
   bool _is_connected;
   void _SetConnectedState(bool is_connected);
-  const int _buffer_max;
-  unsigned char* _encode_buffer;
-  int* _encode_buffer_size;
-  unsigned char* _send_buffer;
-  int* _send_buffer_size;
+  const unsigned int _buffer_max;
+  FLAC__int32* _encode_buffer;
+  unsigned int* _encode_buffer_size;
+  FLAC__byte* _send_buffer;
+  unsigned int* _send_buffer_size;
   FLAC::Encoder* _encoder_stream;
 
  public:

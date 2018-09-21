@@ -5,23 +5,26 @@
 namespace Friend {
 namespace FLAC {
 
-::FLAC__StreamEncoderReadStatus Encoder::read_callback(FLAC__byte buffer[],
-                                                       size_t *bytes) {
-  bool buffer_will_overflow = (*_buffer_size > *bytes);
-  memcpy(buffer, _buffer, (buffer_will_overflow) ? *bytes : *_buffer_size);
-  if (buffer_will_overflow) {
-    *_buffer_size -= *bytes;
-    memmove(_buffer, _buffer + *bytes, *_buffer_size);
-    return FLAC__STREAM_ENCODER_READ_STATUS_CONTINUE;
-  }
-
-  return FLAC__STREAM_ENCODER_READ_STATUS_END_OF_STREAM;
+bool Encoder::process_interleaved() {
+  return this->process_interleaved(_buffer, *_buffer_size);
 }
 
 ::FLAC__StreamEncoderWriteStatus Encoder::write_callback(
     const FLAC__byte buffer[], size_t bytes, unsigned samples,
     unsigned current_frame) {
-  return FLAC__STREAM_ENCODER_WRITE_STATUS_OK; // XXX
+  size_t bytes_to_write =
+      (_send_buffer_max_size > bytes) ? _send_buffer_max_size : bytes;
+  memcpy(_send_buffer, buffer, bytes_to_write);
+  *_send_buffer_size = bytes_to_write;
+  if (bytes_to_write == _send_buffer_max_size) {
+    // Yikes! We want to be able to spool the output from the encoder here, but
+    // it's disallowed by the API. Best amelioration here is to make sure that
+    // _send_buffer_max_size is large enough that it never overflows.
+
+    return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
+  }
+
+  return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
 }
 
 }  // namespace FLAC
