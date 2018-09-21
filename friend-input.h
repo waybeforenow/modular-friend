@@ -26,6 +26,7 @@ class Input {
 
  public:
   Input(uint16_t bind_port);
+  ~Input();
   void MainLoop();
 };
 

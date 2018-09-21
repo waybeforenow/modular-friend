@@ -13,10 +13,10 @@ Output::Output(struct sockaddr_in address)
     : _address(address),
       _is_connected(false),
       _buffer_max(1024 * 32),
-      _decode_buffer(new FLAC__byte(_buffer_max)),
+      _decode_buffer(new FLAC__byte[_buffer_max]),
       _decode_buffer_size(new unsigned int),
-      _playback_left_buffer(new FLAC__int32(_buffer_max)),
-      _playback_right_buffer(new FLAC__int32(_buffer_max)),
+      _playback_left_buffer(new FLAC__int32[_buffer_max]),
+      _playback_right_buffer(new FLAC__int32[_buffer_max]),
       _playback_buffer_size(new unsigned int) {
   // init alsa
   _playback = new ALSA::Playback(_playback_left_buffer, _playback_left_buffer);
@@ -35,6 +35,16 @@ Output::Output(struct sockaddr_in address)
   }
 
   _SetConnectedState(true);  // XXX wait for heartbeat from server
+}
+
+Output::~Output() {
+  delete _playback;
+  delete _decoder_stream;
+  delete[] _decode_buffer;
+  delete _decode_buffer_size;
+  delete[] _playback_left_buffer;
+  delete[] _playback_right_buffer;
+  delete _playback_buffer_size;
 }
 
 void Output::_SetConnectedState(bool is_connected) {

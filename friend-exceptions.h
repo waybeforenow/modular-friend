@@ -12,6 +12,8 @@ class runtime_error : public std::exception {
 
  public:
   runtime_error(const char* file, const std::size_t line);
+  runtime_error(const char* what, const char* file, const std::size_t line);
+  ~runtime_error() { delete what_str; }
   const char* what() const noexcept;
 };
 

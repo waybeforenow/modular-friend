@@ -1,20 +1,18 @@
 #include "friend-alsa-capture.h"
 #include <stdexcept>
+#include <string>
 #include "alsa/asoundlib.h"
 #include "friend-defaults.h"
 
 namespace Friend {
 namespace ALSA {
 
-Capture::Capture()
-    : _device_name(FRIEND__ALSA_DEVICE_NAME),
-      _sample_rate(FRIEND__SAMPLE_RATE),
-      _pcm_format(FRIEND__PCM_FORMAT) {
+Capture::Capture() : _sample_rate(FRIEND__SAMPLE_RATE) {
   int err;
   snd_pcm_hw_params_t* hw_params;
 
-  if ((err = snd_pcm_open(&_device_handle, _device_name, SND_PCM_STREAM_CAPTURE,
-                          0)) < 0) {
+  if ((err = snd_pcm_open(&_device_handle, FRIEND__ALSA_DEVICE_NAME,
+                          SND_PCM_STREAM_CAPTURE, 0)) < 0) {
     FRIEND__THROWEXCEPTION;  // XXX
   }
 
@@ -32,7 +30,7 @@ Capture::Capture()
   }
 
   if ((err = snd_pcm_hw_params_set_format(_device_handle, hw_params,
-                                          _pcm_format)) < 0) {
+                                          FRIEND__PCM_FORMAT)) < 0) {
     FRIEND__THROWEXCEPTION;  // XXX
   }
 
@@ -64,7 +62,10 @@ void Capture::CaptureSamples(void* buffer, snd_pcm_uframes_t buffer_size) {
 
   if ((err = snd_pcm_readi(_device_handle, buffer, buffer_size)) !=
       buffer_size) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    std::string exception_text;
+    exception_text.append("err from snd_pcm_readi: ");
+    exception_text.append(snd_strerror(err));
+    FRIEND__THROWEXCEPTIONWITHTEXT(exception_text.c_str());  // XXX
   }
 }
 

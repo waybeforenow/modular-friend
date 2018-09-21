@@ -26,6 +26,7 @@ int main(int argc, char** argv) {
   std::set_terminate(&onTerminate);
 
   Friend::Input* input = new Friend::Input(4949);
+  input->MainLoop();
   delete input;
 
   return 0;

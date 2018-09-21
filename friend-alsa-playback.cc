@@ -31,7 +31,10 @@ Playback::Playback(FLAC__int32* left_buffer, FLAC__int32* right_buffer)
   }
 }
 
-Playback::~Playback() { snd_pcm_close(_device_handle); }
+Playback::~Playback() {
+  free((void*)_buffers);
+  snd_pcm_close(_device_handle);
+}
 
 void Playback::PlaybackSamples(snd_pcm_uframes_t buffer_size) {
   snd_pcm_sframes_t frames =

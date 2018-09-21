@@ -26,6 +26,7 @@ class Output {
 
  public:
   Output(sockaddr_in address);
+  ~Output();
   void MainLoop();
 };
 

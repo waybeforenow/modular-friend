@@ -7,6 +7,10 @@
 #include "alsa/asoundlib.h"
 #include "friend-defaults.h"
 
+#ifdef DEBUG
+#include <iostream>
+#endif  // DEBUG
+
 namespace Friend {
 
 Input::Input(uint16_t bind_port)
@@ -44,12 +48,24 @@ Input::Input(uint16_t bind_port)
   }
 }
 
+Input::~Input() {
+  delete _capture;
+  delete _encoder_stream;
+  delete[] _encode_buffer;
+  delete _encode_buffer_size;
+  delete[] _send_buffer;
+  delete _send_buffer_size;
+}
+
 void Input::_SetConnectedState(bool is_connected) {
   // XXX: set the output state of some LED
   _is_connected = is_connected;
 }
 
 void Input::MainLoop() {
+#ifdef DEBUG
+  std::cout << "_encode_buffer_size = " << *_encode_buffer_size << std::endl;
+#endif
   // put data in the encode buffer
   _capture->CaptureSamples(_encode_buffer,
                            (snd_pcm_uframes_t)*_encode_buffer_size);

@@ -8,10 +8,8 @@ namespace ALSA {
 
 class Capture {
  private:
-  const char* _device_name;
   snd_pcm_t* _device_handle;
   unsigned int _sample_rate;
-  snd_pcm_format_t _pcm_format;
 
  public:
   Capture();
