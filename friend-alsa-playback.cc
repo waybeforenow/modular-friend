@@ -13,7 +13,7 @@ Playback::Playback(FLAC__int32* left_buffer, FLAC__int32* right_buffer)
   int err;
   _buffers = (void**)calloc(2, sizeof(void*));
   if (_buffers == nullptr) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 
   _buffers[0] = (void*)left_buffer;
@@ -21,13 +21,13 @@ Playback::Playback(FLAC__int32* left_buffer, FLAC__int32* right_buffer)
 
   if ((err = snd_pcm_open(&_device_handle, _device_name,
                           SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 
   if ((err = snd_pcm_set_params(_device_handle, _pcm_format,
                                 SND_PCM_ACCESS_RW_INTERLEAVED, 1, _sample_rate,
                                 1, 500000)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 }
 
@@ -39,7 +39,7 @@ void Playback::PlaybackSamples(snd_pcm_uframes_t buffer_size) {
   if (frames < 0) {
     frames = snd_pcm_recover(_device_handle, frames, 0);
     if (frames < 0) {
-      throw std::exception();  // XXX
+      FRIEND__THROWEXCEPTION;  // XXX
     }
   }
 }

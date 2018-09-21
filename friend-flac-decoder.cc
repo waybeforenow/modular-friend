@@ -1,6 +1,7 @@
 #include "friend-flac-decoder.h"
 #include <string.h>
 #include "FLAC++/decoder.h"
+#include "friend-defaults.h"
 
 namespace Friend {
 namespace FLAC {
@@ -23,7 +24,7 @@ namespace FLAC {
 ::FLAC__StreamDecoderWriteStatus Decoder::write_callback(
     const ::FLAC__Frame *frame, const FLAC__int32 *const buffer[]) {
   if (frame->header.channels != 2) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 
   size_t bytes_to_copy =

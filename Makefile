@@ -4,7 +4,8 @@ LDFLAGS = -lasound -lFLAC++
 .PHONY : all
 
 SRCS = friend-alsa-capture.cc friend-alsa-playback.cc friend-flac-decoder.cc \
-			 friend-flac-encoder.cc friend-input.cc friend-output.cc
+			 friend-flac-encoder.cc friend-input.cc friend-output.cc \
+			 friend-exceptions.cc
 OBJS = $(SRCS:.c=.o)
 
 all: friend-dummy-main

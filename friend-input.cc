@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdexcept>
 #include "alsa/asoundlib.h"
+#include "friend-defaults.h"
 
 namespace Friend {
 
@@ -25,13 +26,13 @@ Input::Input(uint16_t bind_port)
 
   // init network socket
   if ((_socket_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 
   int options = 0;
   if (setsockopt(_socket_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &options,
                  sizeof(options))) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
   _bind_address.sin_family = AF_INET;
   _bind_address.sin_addr.s_addr = INADDR_ANY;  // XXX
@@ -39,7 +40,7 @@ Input::Input(uint16_t bind_port)
 
   if (bind(_socket_fd, (struct sockaddr*)&_bind_address,
            sizeof(_bind_address)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 }
 
@@ -59,7 +60,7 @@ void Input::MainLoop() {
   // XXX: _client_address needs to be set.
   if (sendto(_socket_fd, _send_buffer, *_send_buffer_size, MSG_CONFIRM,
              &_client_address, sizeof(_client_address)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 }
 

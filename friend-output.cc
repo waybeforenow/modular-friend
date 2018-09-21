@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdexcept>
 #include "alsa/asoundlib.h"
+#include "friend-defaults.h"
 
 namespace Friend {
 
@@ -26,11 +27,11 @@ Output::Output(struct sockaddr_in address)
       _playback_right_buffer, _playback_buffer_size, _buffer_max);
 
   if ((_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 
   if (connect(_socket_fd, (struct sockaddr*)&_address, sizeof(_address)) < 0) {
-    throw std::exception();  // XXX
+    FRIEND__THROWEXCEPTION;  // XXX
   }
 
   _SetConnectedState(true);  // XXX wait for heartbeat from server
