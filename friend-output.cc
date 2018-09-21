@@ -1,27 +1,33 @@
 #include "friend-output.h"
+#include <netinet/in.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include <unistd.h>
 #include <stdexcept>
+#include "alsa/asoundlib.h"
 
 namespace Friend {
 
-Output::Output(struct sockaddr_in address) : _address(address), _is_connected(false), _buffer_size(1024 * 32), _buffer(new unsigned char[_buffer_size]), _read_bytes(new int) {
+Output::Output(struct sockaddr_in address)
+    : _address(address),
+      _is_connected(false),
+      _buffer_size(1024 * 32),
+      _buffer(new unsigned char[_buffer_size]),
+      _read_bytes(new int) {
   // XXX: init alsa
 
-  // XXX: init flac decoder
+  // init flac decoder
   _decoder_stream = new FLAC::Decoder(_buffer, _read_bytes);
 
   if ((_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-    throw std::exception(); // XXX
+    throw std::exception();  // XXX
   }
 
   if (connect(_socket_fd, (struct sockaddr*)&_address, sizeof(_address)) < 0) {
-    throw std::exception(); // XXX
+    throw std::exception();  // XXX
   }
 
-  _SetConnectedState(true); // XXX wait for heartbeat from server
+  _SetConnectedState(true);  // XXX wait for heartbeat from server
 }
 
 void Output::_SetConnectedState(bool is_connected) {
@@ -37,8 +43,8 @@ void Output::MainLoop() {
   } else {
     *_read_bytes = read(_socket_fd, _buffer, bytes_to_read);
   }
+
+  _decoder_stream->process_until_end_of_stream();
 }
 
-} // namespace Friend
-
-int main() { return 0; }
+}  // namespace Friend

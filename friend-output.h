@@ -1,15 +1,17 @@
 #ifndef _FRIEND_OUTPUT_H
 #define _FRIEND_OUTPUT_H
 
-#include "friend-flac-decoder.h"
-#include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
+#include "alsa/asoundlib.h"
+#include "friend-alsa-playback.h"
+#include "friend-flac-decoder.h"
 
 namespace Friend {
 
 class Output {
  private:
-  // snd_pcm_t* _pcm_handle;
+  ALSA::Playback* _playback;
   int _socket_fd;
   struct sockaddr_in _address;
   bool _is_connected;
@@ -24,6 +26,6 @@ class Output {
   void MainLoop();
 };
 
-} // namespace Output
+}  // namespace Output
 
-#endif // _FRIEND_OUTPUT_H
+#endif  // _FRIEND_OUTPUT_H
