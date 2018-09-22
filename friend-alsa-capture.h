@@ -14,7 +14,7 @@ class Capture {
  public:
   Capture();
   ~Capture();
-  void CaptureSamples(void* buffer, snd_pcm_uframes_t buffer_size);
+  void CaptureSamples(void* buffer, snd_pcm_uframes_t* buffer_size);
 };
 
 }  // namespace ALSA

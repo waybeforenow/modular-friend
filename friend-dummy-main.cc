@@ -1,4 +1,7 @@
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <stdlib.h>
+#include <sys/socket.h>
 #include <exception>
 #include <iostream>
 #include <typeinfo>
@@ -25,9 +28,14 @@ void onTerminate() noexcept {
 int main(int argc, char** argv) {
   std::set_terminate(&onTerminate);
 
-  Friend::Input* input = new Friend::Input(4949);
-  input->MainLoop();
-  delete input;
+  struct sockaddr_in bind_address;
+  bind_address.sin_family = AF_INET;
+  bind_address.sin_port = htons(4949);
+  bind_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+  Friend::Output* output = new Friend::Output(bind_address);
+  output->MainLoop();
+  delete output;
 
   return 0;
 }

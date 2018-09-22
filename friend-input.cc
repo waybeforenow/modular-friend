@@ -1,5 +1,7 @@
 #include "friend-input.h"
+#include <errno.h>
 #include <netinet/in.h>
+#include <string.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -16,7 +18,7 @@ namespace Friend {
 Input::Input(uint16_t bind_port)
     : _is_connected(false),
       _buffer_max(1024 * 32),
-      _encode_buffer(new FLAC__int32[_buffer_max]),
+      _encode_buffer(new FLAC__int32[_buffer_max * 2]),
       _encode_buffer_size(new unsigned int(_buffer_max)),
       _send_buffer(new FLAC__byte[_buffer_max]),
       _send_buffer_size(new unsigned int) {
@@ -27,6 +29,19 @@ Input::Input(uint16_t bind_port)
   _encoder_stream =
       new FLAC::Encoder(_encode_buffer, _encode_buffer_size, _send_buffer,
                         _send_buffer_size, _buffer_max);
+  _encoder_stream->set_channels(2);
+  _encoder_stream->set_sample_rate(FRIEND__SAMPLE_RATE);
+  ::FLAC__StreamEncoderInitStatus flac_err;
+  if ((flac_err = _encoder_stream->init()) != FLAC__STREAM_ENCODER_OK) {
+    if (flac_err == FLAC__STREAM_ENCODER_INIT_STATUS_ENCODER_ERROR) {
+      // generic encoder error -- probe the encoder state for details
+      auto flac_state = _encoder_stream->get_state();
+      FRIEND__THROWEXCEPTIONWITHTEXT(flac_state.as_cstring());
+    }
+
+    FRIEND__THROWEXCEPTIONWITHTEXT(
+        FLAC__StreamEncoderInitStatusString[flac_err]);
+  }
 
   // init network socket
   if ((_socket_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
@@ -68,7 +83,7 @@ void Input::MainLoop() {
 #endif
   // put data in the encode buffer
   _capture->CaptureSamples(_encode_buffer,
-                           (snd_pcm_uframes_t)*_encode_buffer_size);
+                           (snd_pcm_uframes_t*)_encode_buffer_size);
 
   // process data from the encode buffer and place it in the send buffer
   _encoder_stream->process_interleaved();
@@ -76,7 +91,7 @@ void Input::MainLoop() {
   // XXX: _client_address needs to be set.
   if (sendto(_socket_fd, _send_buffer, *_send_buffer_size, MSG_CONFIRM,
              &_client_address, sizeof(_client_address)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTIONWITHTEXT(strerror(errno));
   }
 }
 

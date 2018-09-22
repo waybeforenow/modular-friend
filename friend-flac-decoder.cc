@@ -18,6 +18,7 @@ namespace FLAC {
     return FLAC__STREAM_DECODER_READ_STATUS_CONTINUE;
   }
 
+  *bytes = *_decode_buffer_size;
   return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
 }
 

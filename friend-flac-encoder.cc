@@ -21,7 +21,8 @@ bool Encoder::process_interleaved() {
     // it's disallowed by the API. Best amelioration here is to make sure that
     // _send_buffer_max_size is large enough that it never overflows.
 
-    return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
+    // return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
+    return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
   }
 
   return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;

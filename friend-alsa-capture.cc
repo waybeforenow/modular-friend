@@ -57,16 +57,19 @@ Capture::Capture() : _sample_rate(FRIEND__SAMPLE_RATE) {
 
 Capture::~Capture() { snd_pcm_close(_device_handle); }
 
-void Capture::CaptureSamples(void* buffer, snd_pcm_uframes_t buffer_size) {
+void Capture::CaptureSamples(void* buffer, snd_pcm_uframes_t* buffer_size) {
   int err;
 
-  if ((err = snd_pcm_readi(_device_handle, buffer, buffer_size)) !=
-      buffer_size) {
-    std::string exception_text;
-    exception_text.append("err from snd_pcm_readi: ");
-    exception_text.append(snd_strerror(err));
-    FRIEND__THROWEXCEPTIONWITHTEXT(exception_text.c_str());  // XXX
+  if ((err = snd_pcm_readi(_device_handle, buffer, *buffer_size)) < 0) {
+    if ((err = snd_pcm_recover(_device_handle, err, 1)) < 0) {
+      std::string exception_text;
+      exception_text.append("err from snd_pcm_readi: ");
+      exception_text.append(snd_strerror(err));
+      FRIEND__THROWEXCEPTIONWITHTEXT(exception_text.c_str());
+    }
   }
+
+  *buffer_size = err;
 }
 
 }  // namespace ALSA
