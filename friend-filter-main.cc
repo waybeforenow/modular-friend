@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <exception>
 #include <iostream>
+#include <functional>
 #include <thread>
 #include <typeinfo>
 #include "friend-exceptions.h"
@@ -28,17 +29,18 @@ int main(int argc, char** argv) {
   std::set_terminate(&onTerminate);
 
   auto queue = new Friend::SafeQueue<float>;
-  Friend::Output* input = new Friend::Input(queue, 1500, 0.6f);
-  Friend::Output* output = new Friend::Output(queue);
+  auto input = new Friend::Input(queue, 1500, 0.6f);
+  auto output = new Friend::Output(queue);
 
-  std::thread input_thread(input->MainLoop());
-  std::thread output_thread(output->MainLoop());
+  std::thread input_thread(std::bind(&Friend::Input::MainLoop, input));
+  std::thread output_thread(std::bind(&Friend::Output::MainLoop, output));
 
   input_thread.join();
   output_thread.join();
 
   delete input;
   delete output;
+  delete queue;
 
   return 0;
 }

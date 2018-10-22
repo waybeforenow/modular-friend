@@ -12,13 +12,14 @@ namespace Friend {
 
 class Output {
  private:
-  ALSA::Playback* _playback;
   SafeQueue<float>* _output_queue;
   const snd_pcm_uframes_t _buffer_size;
+  const ssize_t _sample_width;
   void* _output_buffer;
+  ALSA::Playback* _playback;
 
  public:
-  Output(SafeQueue*);
+  Output(SafeQueue<float>*);
   ~Output();
   void MainLoop();
 };

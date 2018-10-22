@@ -1,18 +1,17 @@
 CXXFLAGS = --std=c++11 -O2 -Wall $(DEBUGFLAGS)
-LDFLAGS = -lasound
+LDFLAGS = -lasound -lm -lpthread -lstdc++
 DEBUGFLAGS = 
 
 .PHONY : all
 
 SRCS = friend-alsa-capture.cc friend-alsa-playback.cc friend-exceptions.cc \
-			 friend-filter-input.cc friend-filter-main.cc friend-filter-output.cc \
-			 friend-flac-decoder.cc friend-flac-encoder.cc
+			 friend-filter-input.cc friend-filter-main.cc friend-filter-output.cc
 
 OBJS = $(SRCS:.cc=.o)
 
-all: friend-ladder-main
+all: friend-filter-main
 
-friend-ladder-main: $(OBJS)
+friend-filter-main: $(OBJS)
 
 friend-alsa-capture.o: friend-defaults.h
 friend-alsa-playback.o: friend-defaults.h
