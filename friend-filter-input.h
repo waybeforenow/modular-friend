@@ -22,7 +22,7 @@ class Input {
   ALSA::Capture* _capture;
 
  public:
-  Input(SafeQueue<FRIEND__PCM_TYPE>*, uint16_t, float);
+  Input(SafeQueue<FRIEND__PCM_TYPE>*, float*, float*);
   ~Input();
   void MainLoop();
 };

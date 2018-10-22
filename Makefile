@@ -1,6 +1,6 @@
-CXXFLAGS = --std=c++11 -O2 -Wall $(DEBUGFLAGS)
+CXXFLAGS = --std=c++11 -O2 -Wall -DFRIEND__BUFFER_SIZE=512 $(DEBUGFLAGS)
 LDFLAGS = -lasound -lm -lpthread -lstdc++
-DEBUGFLAGS = 
+DEBUGFLAGS =
 
 .PHONY : all
 

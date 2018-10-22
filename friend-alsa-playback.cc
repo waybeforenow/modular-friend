@@ -14,7 +14,7 @@ Playback::Playback(FRIEND__PCM_TYPE* playback_buffer)
   int err;
 
   if ((err = snd_pcm_open(&_device_handle, _device_name,
-                          SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
+                          SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK)) < 0) {
     FRIEND__THROWEXCEPTION;  // XXX
   }
 
@@ -33,6 +33,9 @@ void Playback::PlaybackSamples(snd_pcm_uframes_t buffer_size) {
   snd_pcm_sframes_t frames =
       snd_pcm_writei(_device_handle, (void*)_playback_buffer, buffer_size);
   if (frames < 0) {
+    if (frames == -EAGAIN) {
+      return;
+    }
     frames = snd_pcm_recover(_device_handle, frames, 1);
     if (frames < 0) {
       FRIEND__THROWEXCEPTIONWITHTEXT(snd_strerror(frames));

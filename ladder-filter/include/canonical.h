@@ -10,8 +10,8 @@ namespace LadderFilter {
 template <typename T>
 class Filter {
  private:
-  float _freq;
-  float _res;
+  float* _freq;
+  float* _res;
   float _sr;
   float _istor;
   float _delay[6];
@@ -40,7 +40,7 @@ class Filter {
   }
 
  public:
-  Filter(float freq, float res, float sr = 44100)
+  Filter(float* freq, float* res, float sr = 44100)
       : _freq(freq), _res(res), _sr(sr), _istor(0.0), THERMAL(0.000025) {
     int i;
 
@@ -51,8 +51,8 @@ class Filter {
   }
 
   const float tick(const T& n) {
-    float freq = _freq;
-    float res = _res;
+    float freq = *_freq;
+    float res = *_res;
     float res4;
     float* delay = _delay;
     float* tanhstg = _tanhstg;

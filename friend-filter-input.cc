@@ -13,14 +13,14 @@
 
 namespace Friend {
 
-Input::Input(SafeQueue<FRIEND__PCM_TYPE>* queue, uint16_t cutoff_frequency,
-             float resonance)
+Input::Input(SafeQueue<FRIEND__PCM_TYPE>* queue, float* cutoff_frequency,
+             float* resonance)
     : _output_queue(queue),
       _left_filter(new Effects::LadderFilter::Filter<FRIEND__PCM_TYPE>(
-          (float)cutoff_frequency, resonance, (float)FRIEND__SAMPLE_RATE)),
+          cutoff_frequency, resonance, (float)FRIEND__SAMPLE_RATE)),
       _right_filter(new Effects::LadderFilter::Filter<FRIEND__PCM_TYPE>(
-          (float)cutoff_frequency, resonance, (float)FRIEND__SAMPLE_RATE)),
-      _buffer_size(32),
+          cutoff_frequency, resonance, (float)FRIEND__SAMPLE_RATE)),
+      _buffer_size(FRIEND__BUFFER_SIZE),
       _sample_buffer(new FRIEND__PCM_TYPE[_buffer_size * 2]),
       _capture(new ALSA::Capture()) {}
 

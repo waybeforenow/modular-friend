@@ -13,9 +13,8 @@ namespace Friend {
 
 Output::Output(SafeQueue<FRIEND__PCM_TYPE>* queue)
     : _output_queue(queue),
-      _buffer_size(32 * 2),
-      _sample_width(snd_pcm_format_size(FRIEND__PCM_FORMAT, 1)),
-      _output_buffer(new FRIEND__PCM_TYPE[_buffer_size]),
+      _buffer_size(FRIEND__BUFFER_SIZE),
+      _output_buffer(new FRIEND__PCM_TYPE[_buffer_size * 2]),
       _playback(new ALSA::Playback(_output_buffer)) {}
 
 Output::~Output() {
@@ -26,11 +25,9 @@ Output::~Output() {
 void Output::MainLoop() {
   while (true) {
     snd_pcm_uframes_t b = 0;
-    while (b < _buffer_size) {
-      ((char*)_output_buffer)[_sample_width * b++] =
-          _output_queue->dequeue_left_channel();
-      ((char*)_output_buffer)[_sample_width * b++] =
-          _output_queue->dequeue_right_channel();
+    while (b < _buffer_size * 2) {
+      _output_buffer[b++] = _output_queue->dequeue_left_channel();
+      _output_buffer[b++] = _output_queue->dequeue_right_channel();
     }
 
     _playback->PlaybackSamples(_buffer_size);
