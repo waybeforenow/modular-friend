@@ -7,21 +7,22 @@
 #include "friend-alsa-capture.h"
 #include "friend-flac-encoder.h"
 #include "friend-safe-queue.h"
+#include "friend-defaults.h"
 #include "ladder-filter/include/canonical.h"
 
 namespace Friend {
 
 class Input {
  private:
-  ALSA::Capture* _capture;
-  SafeQueue<float>* _output_queue;
-  Effects::LadderFilter::Filter<float>* _filter;
+  SafeQueue<FRIEND__PCM_TYPE>* _output_queue;
+  Effects::LadderFilter::Filter<float>* _left_filter;
+  Effects::LadderFilter::Filter<float>* _right_filter;
   const snd_pcm_uframes_t _buffer_size;
-  const ssize_t _sample_width;
-  void* _sample_buffer;
+  FRIEND__PCM_TYPE* _sample_buffer;
+  ALSA::Capture* _capture;
 
  public:
-  Input(SafeQueue<float>*, uint16_t, float);
+  Input(SafeQueue<FRIEND__PCM_TYPE>*, uint16_t, float);
   ~Input();
   void MainLoop();
 };

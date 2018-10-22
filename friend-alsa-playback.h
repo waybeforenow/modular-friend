@@ -3,6 +3,7 @@
 
 #include "FLAC++/decoder.h"
 #include "alsa/asoundlib.h"
+#include "friend-defaults.h"
 
 namespace Friend {
 namespace ALSA {
@@ -13,10 +14,10 @@ class Playback {
   snd_pcm_t* _device_handle;
   unsigned int _sample_rate;
   snd_pcm_format_t _pcm_format;
-  void** _buffers;
+  FRIEND__PCM_TYPE* _playback_buffer;
 
  public:
-  Playback(FLAC__int32* left_buffer, FLAC__int32* right_buffer);
+  Playback(FRIEND__PCM_TYPE*);
   ~Playback();
   void PlaybackSamples(snd_pcm_uframes_t buffer_size);
 };

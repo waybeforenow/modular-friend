@@ -57,10 +57,11 @@ Capture::Capture() : _sample_rate(FRIEND__SAMPLE_RATE) {
 
 Capture::~Capture() { snd_pcm_close(_device_handle); }
 
-void Capture::CaptureSamples(void* buffer, snd_pcm_uframes_t* buffer_size) {
+void Capture::CaptureSamples(FRIEND__PCM_TYPE* buffer,
+                             snd_pcm_uframes_t* buffer_size) {
   int err;
 
-  if ((err = snd_pcm_readi(_device_handle, buffer, *buffer_size)) < 0) {
+  if ((err = snd_pcm_readi(_device_handle, (void*)buffer, *buffer_size)) < 0) {
     if ((err = snd_pcm_recover(_device_handle, err, 1)) < 0) {
       std::string exception_text;
       exception_text.append("err from snd_pcm_readi: ");

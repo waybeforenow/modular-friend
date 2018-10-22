@@ -6,18 +6,12 @@
 namespace Friend {
 namespace ALSA {
 
-Playback::Playback(FLAC__int32* left_buffer, FLAC__int32* right_buffer)
+Playback::Playback(FRIEND__PCM_TYPE* playback_buffer)
     : _device_name(FRIEND__ALSA_DEVICE_NAME),
       _sample_rate(FRIEND__SAMPLE_RATE),
-      _pcm_format(FRIEND__PCM_FORMAT) {
+      _pcm_format(FRIEND__PCM_FORMAT),
+      _playback_buffer(playback_buffer) {
   int err;
-  _buffers = (void**)calloc(2, sizeof(void*));
-  if (_buffers == nullptr) {
-    FRIEND__THROWEXCEPTION;  // XXX
-  }
-
-  _buffers[0] = (void*)left_buffer;
-  _buffers[1] = (void*)right_buffer;
 
   if ((err = snd_pcm_open(&_device_handle, _device_name,
                           SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
@@ -32,13 +26,12 @@ Playback::Playback(FLAC__int32* left_buffer, FLAC__int32* right_buffer)
 }
 
 Playback::~Playback() {
-  free((void*)_buffers);
   snd_pcm_close(_device_handle);
 }
 
 void Playback::PlaybackSamples(snd_pcm_uframes_t buffer_size) {
   snd_pcm_sframes_t frames =
-      snd_pcm_writen(_device_handle, _buffers, buffer_size);
+      snd_pcm_writei(_device_handle, (void*)_playback_buffer, buffer_size);
   if (frames < 0) {
     frames = snd_pcm_recover(_device_handle, frames, 1);
     if (frames < 0) {

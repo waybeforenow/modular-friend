@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <exception>
-#include <iostream>
 #include <functional>
+#include <iostream>
 #include <thread>
 #include <typeinfo>
+#include "friend-defaults.h"
 #include "friend-exceptions.h"
 #include "friend-filter-input.h"
 #include "friend-filter-output.h"
@@ -28,7 +29,7 @@ void onTerminate() noexcept {
 int main(int argc, char** argv) {
   std::set_terminate(&onTerminate);
 
-  auto queue = new Friend::SafeQueue<float>;
+  auto queue = new Friend::SafeQueue<FRIEND__PCM_TYPE>;
   auto input = new Friend::Input(queue, 1500, 0.6f);
   auto output = new Friend::Output(queue);
 

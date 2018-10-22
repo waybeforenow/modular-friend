@@ -7,19 +7,20 @@
 #include "friend-alsa-playback.h"
 #include "friend-flac-decoder.h"
 #include "friend-safe-queue.h"
+#include "friend-defaults.h"
 
 namespace Friend {
 
 class Output {
  private:
-  SafeQueue<float>* _output_queue;
+  SafeQueue<FRIEND__PCM_TYPE>* _output_queue;
   const snd_pcm_uframes_t _buffer_size;
   const ssize_t _sample_width;
-  void* _output_buffer;
+  FRIEND__PCM_TYPE* _output_buffer;
   ALSA::Playback* _playback;
 
  public:
-  Output(SafeQueue<float>*);
+  Output(SafeQueue<FRIEND__PCM_TYPE>*);
   ~Output();
   void MainLoop();
 };

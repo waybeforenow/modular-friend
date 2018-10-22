@@ -11,34 +11,48 @@ namespace Friend {
 template <class T>
 class SafeQueue {
  public:
-  SafeQueue(void) : q(), m(), c() {}
-
-  ~SafeQueue(void) {}
+  SafeQueue(void) : leftq(), rightq(), leftm(), rightm(), leftc(), rightc() {}
+  ~SafeQueue(void) = default;
 
   // Add an element to the queue.
-  void enqueue(T t) {
-    std::lock_guard<std::mutex> lock(m);
-    q.push(t);
-    c.notify_one();
+  void enqueue_left_channel(const T sample) {
+    std::lock_guard<std::mutex> lock(leftm);
+    leftq.push(sample);
+    leftc.notify_one();
   }
 
-  // Get the "front"-element.
-  // If the queue is empty, wait till a element is avaiable.
-  T dequeue(void) {
-    std::unique_lock<std::mutex> lock(m);
-    while (q.empty()) {
+  void enqueue_right_channel(const T sample) {
+    std::lock_guard<std::mutex> lock(rightm);
+    rightq.push(sample);
+    rightc.notify_one();
+  }
+
+  const T dequeue_left_channel() {
+    std::unique_lock<std::mutex> lock(leftm);
+    while (leftq.empty()) {
       // release lock as long as the wait and reaquire it afterwards.
-      c.wait(lock);
+      leftc.wait(lock);
     }
-    T val = q.front();
-    q.pop();
+    const T val = leftq.front();
+    leftq.pop();
+    return val;
+  }
+
+  const T dequeue_right_channel() {
+    std::unique_lock<std::mutex> lock(rightm);
+    while (rightq.empty()) {
+      // release lock as long as the wait and reaquire it afterwards.
+      rightc.wait(lock);
+    }
+    const T val = rightq.front();
+    rightq.pop();
     return val;
   }
 
  private:
-  std::queue<T> q;
-  mutable std::mutex m;
-  std::condition_variable c;
+  std::queue<T> leftq, rightq;
+  mutable std::mutex leftm, rightm;
+  std::condition_variable leftc, rightc;
 };
 
 }  // namespace Friend
