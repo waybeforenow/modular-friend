@@ -1,5 +1,5 @@
-#ifndef _FRIEND_ALSA_CAPTURE_H
-#define _FRIEND_ALSA_CAPTURE_H
+#ifndef __FRIEND_ALSA_CAPTURE_H
+#define __FRIEND_ALSA_CAPTURE_H
 
 #include "alsa/asoundlib.h"
 
@@ -20,4 +20,4 @@ class Capture {
 }  // namespace ALSA
 }  // namespace Friend
 
-#endif  // _FRIEND_ALSA_CAPTURE_H
+#endif  // __FRIEND_ALSA_CAPTURE_H

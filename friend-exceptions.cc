@@ -18,6 +18,7 @@ runtime_error::runtime_error(const char* what, const char* file,
   what_str->append(what);
   what_str->push_back(')');
 }
+
 const char* runtime_error::what() const noexcept { return what_str->c_str(); }
 
 }  // namespace Friend

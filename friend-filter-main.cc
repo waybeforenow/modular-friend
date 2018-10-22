@@ -1,13 +1,12 @@
-#include <arpa/inet.h>
-#include <netinet/in.h>
 #include <stdlib.h>
-#include <sys/socket.h>
 #include <exception>
 #include <iostream>
+#include <thread>
 #include <typeinfo>
 #include "friend-exceptions.h"
-#include "friend-net-input.h"
-#include "friend-net-output.h"
+#include "friend-filter-input.h"
+#include "friend-filter-output.h"
+#include "friend-safe-queue.h"
 
 void onTerminate() noexcept {
   if (auto cur_ex = std::current_exception()) {
@@ -28,13 +27,17 @@ void onTerminate() noexcept {
 int main(int argc, char** argv) {
   std::set_terminate(&onTerminate);
 
-  struct sockaddr_in bind_address;
-  bind_address.sin_family = AF_INET;
-  bind_address.sin_port = htons(4949);
-  bind_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+  auto queue = new Friend::SafeQueue<float>;
+  Friend::Output* input = new Friend::Input(queue, 1500, 0.6f);
+  Friend::Output* output = new Friend::Output(queue);
 
-  Friend::Output* output = new Friend::Output(bind_address);
-  output->MainLoop();
+  std::thread input_thread(input->MainLoop());
+  std::thread output_thread(output->MainLoop());
+
+  input_thread.join();
+  output_thread.join();
+
+  delete input;
   delete output;
 
   return 0;

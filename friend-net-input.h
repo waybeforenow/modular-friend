@@ -1,5 +1,5 @@
-#ifndef _FRIEND_INPUT_H
-#define _FRIEND_INPUT_H
+#ifndef __FRIEND_INPUT_H
+#define __FRIEND_INPUT_H
 
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -32,4 +32,4 @@ class Input {
 
 }  // namespace Friend
 
-#endif  // _FRIEND_INPUT_H
+#endif  // __FRIEND_INPUT_H

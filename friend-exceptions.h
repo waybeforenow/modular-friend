@@ -1,5 +1,5 @@
-#ifndef _FRIEND_EXCEPTIONS_H
-#define _FRIEND_EXCEPTIONS_H
+#ifndef __FRIEND_EXCEPTIONS_H
+#define __FRIEND_EXCEPTIONS_H
 
 #include <exception>
 #include <string>
@@ -19,4 +19,4 @@ class runtime_error : public std::exception {
 
 }  // namespace Friend
 
-#endif  // _FRIEND_EXCEPTIONS_H
+#endif  // __FRIEND_EXCEPTIONS_H

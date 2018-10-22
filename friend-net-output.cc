@@ -1,4 +1,4 @@
-#include "friend-output.h"
+#include "friend-net-output.h"
 #include <errno.h>
 #include <netinet/in.h>
 #include <string.h>

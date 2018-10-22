@@ -1,5 +1,5 @@
-#ifndef _FRIEND_ALSA_PLAYBACK_H
-#define _FRIEND_ALSA_PLAYBACK_H
+#ifndef __FRIEND_ALSA_PLAYBACK_H
+#define __FRIEND_ALSA_PLAYBACK_H
 
 #include "FLAC++/decoder.h"
 #include "alsa/asoundlib.h"
@@ -24,4 +24,4 @@ class Playback {
 }  // namespace ALSA
 }  // namespace Friend
 
-#endif  // _FRIEND_ALSA_PLAYBACK_H
+#endif  // __FRIEND_ALSA_PLAYBACK_H

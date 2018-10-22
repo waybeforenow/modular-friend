@@ -1,5 +1,5 @@
-#ifndef _FRIEND_FLAC_DECODER_H
-#define _FRIEND_FLAC_DECODER_H
+#ifndef __FRIEND_FLAC_DECODER_H
+#define __FRIEND_FLAC_DECODER_H
 
 #include "FLAC++/decoder.h"
 
@@ -37,4 +37,4 @@ class Decoder : public ::FLAC::Decoder::Stream {
 }  // namespace FLAC
 }  // namespace Friend
 
-#endif  // _FRIEND_FLAC_DECODER_H
+#endif  // __FRIEND_FLAC_DECODER_H

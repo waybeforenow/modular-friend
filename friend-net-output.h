@@ -1,5 +1,5 @@
-#ifndef _FRIEND_OUTPUT_H
-#define _FRIEND_OUTPUT_H
+#ifndef __FRIEND_OUTPUT_H
+#define __FRIEND_OUTPUT_H
 
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -30,6 +30,6 @@ class Output {
   void MainLoop();
 };
 
-}  // namespace Output
+}  // namespace Friend
 
-#endif  // _FRIEND_OUTPUT_H
+#endif  // __FRIEND_OUTPUT_H
