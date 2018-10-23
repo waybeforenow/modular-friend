@@ -23,7 +23,6 @@
 #define FRIEND__BUFFER_SIZE 64
 #endif
 
-
 #define FRIEND__THROWEXCEPTION throw Friend::runtime_error(__FILE__, __LINE__)
 #define FRIEND__THROWEXCEPTIONWITHTEXT(x) \
   throw Friend::runtime_error(x, __FILE__, __LINE__)

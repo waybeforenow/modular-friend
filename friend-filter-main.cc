@@ -1,8 +1,8 @@
 #include <stdlib.h>
+#include <csignal>
 #include <exception>
 #include <functional>
 #include <iostream>
-#include <csignal>
 #include <thread>
 #include <typeinfo>
 #include "friend-defaults.h"

@@ -25,9 +25,7 @@ Playback::Playback(FRIEND__PCM_TYPE* playback_buffer)
   }
 }
 
-Playback::~Playback() {
-  snd_pcm_close(_device_handle);
-}
+Playback::~Playback() { snd_pcm_close(_device_handle); }
 
 void Playback::PlaybackSamples(snd_pcm_uframes_t buffer_size) {
   snd_pcm_sframes_t frames =

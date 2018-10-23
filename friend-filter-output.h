@@ -5,9 +5,9 @@
 #include <sys/socket.h>
 #include "alsa/asoundlib.h"
 #include "friend-alsa-playback.h"
+#include "friend-defaults.h"
 #include "friend-flac-decoder.h"
 #include "friend-safe-queue.h"
-#include "friend-defaults.h"
 
 namespace Friend {
 

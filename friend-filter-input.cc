@@ -38,8 +38,10 @@ void Input::MainLoop() {
 
     snd_pcm_uframes_t i = 0;
     while (i < _buffer_size * 2) {
-      _output_queue->enqueue_left_channel(_left_filter->tick(_sample_buffer[i++]));
-      _output_queue->enqueue_right_channel(_right_filter->tick(_sample_buffer[i++]));
+      _output_queue->enqueue_left_channel(
+          _left_filter->tick(_sample_buffer[i++]));
+      _output_queue->enqueue_right_channel(
+          _right_filter->tick(_sample_buffer[i++]));
     }
   }
 }
