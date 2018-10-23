@@ -4,7 +4,6 @@
  *
  */
 
-#include "friend-alsa-capture.h"
 #ifndef __FRIEND_ALSA_CAPTURE_H
 #define __FRIEND_ALSA_CAPTURE_H
 

@@ -18,8 +18,8 @@ install: friend-filter-main
 	install -m 0755 friend-filter-main $(BINDIR)
 
 clean:
-	rm friend-filter-main
-	rm $(OBJS)
+	rm friend-filter-main || true
+	rm $(OBJS) || true
 
 friend-filter-main: $(OBJS)
 

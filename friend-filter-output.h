@@ -13,16 +13,12 @@
  *
  */
 
-#ifndef __FRIEND_INPUT_H
 #ifndef __FRIEND_OUTPUT_H
 #define __FRIEND_OUTPUT_H
 
-#include <netinet/in.h>
-#include <sys/socket.h>
 #include "alsa/asoundlib.h"
 #include "friend-alsa-playback.h"
 #include "friend-defaults.h"
-#include "friend-flac-decoder.h"
 #include "friend-safe-queue.h"
 
 namespace Friend {

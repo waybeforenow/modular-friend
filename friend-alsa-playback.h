@@ -4,11 +4,9 @@
  *
  */
 
-#include "friend-alsa-capture.h"
 #ifndef __FRIEND_ALSA_PLAYBACK_H
 #define __FRIEND_ALSA_PLAYBACK_H
 
-#include "FLAC++/decoder.h"
 #include "alsa/asoundlib.h"
 #include "friend-defaults.h"
 
