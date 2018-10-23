@@ -1,0 +1,42 @@
+_Overview_
+
+This directory contains the program code necessary to implement a Moog four-pole
+low pass ladder filter in digital software. There are three implementations that
+use the same interface with different algorithms; of these, only one
+(`include/canonical.h`) currently works. All of these algorithms are based on
+the _Non-Linear Digital Implementation of the Moog Ladder Filter_ paper which
+was authored by Antti Huovilainen and presented at DAFx'04 in Naples, Italy.
+
+_Folder structure_
+
+* include/
+  This directory contains C++ header files.
+
+  * canonical.h
+    "Canonical" implementation of the ladder filter that was adapted from the
+    Csound library.
+
+  * full-differential.h
+    Experimental implementation of the ladder filter that uses distinct
+    differential stages with feedback.
+
+  * recursive.h
+    Experimental implementation of the ladder filter that uses one
+    implementation for every stage which can be called recursively.
+
+* test/
+  This directory contains files that are useful for testing the ladder filter.
+
+  * test.raw
+    An example of a 32-bit float, little-endian, headerless PCM file. The sample
+    is of a TR-808 snare drum.
+
+* main.cc
+  This program accepts the filename of a 32-bit float, little-endian, headerless
+  PCM file, transforms it using a ladder filter algorithm, and writes the
+  transformation to stdout.
+
+_Makefile targets_
+
+The Makefile has three targets: `canonical`, `full-differential`, and
+`recursive` which build `main.cc` with the named implementation.

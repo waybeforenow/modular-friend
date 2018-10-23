@@ -25,7 +25,7 @@
 #endif
 
 #ifndef FRIEND__BUFFER_SIZE
-#define FRIEND__BUFFER_SIZE 64
+#define FRIEND__BUFFER_SIZE 512
 #endif
 
 #define FRIEND__THROWEXCEPTION throw Friend::runtime_error(__FILE__, __LINE__)
