@@ -1,8 +1,10 @@
-CXXFLAGS = --std=c++11 -O2 -Wall $(DEBUGFLAGS)
-LDFLAGS = -lasound -lm -lpthread -lstdc++
-DEBUGFLAGS =
+CXXFLAGS = --std=c++11 -O2 -Wall
+LDFLAGS += -lasound -lm -lpthread -lstdc++
 
-.PHONY : all
+PREFIX ?= $(DESTDIR)/usr
+BINDIR ?= $(PREFIX)/bin
+
+.PHONY : all install clean
 
 SRCS = friend-alsa-capture.cc friend-alsa-playback.cc friend-exceptions.cc \
 			 friend-filter-input.cc friend-filter-main.cc friend-filter-output.cc
@@ -10,6 +12,14 @@ SRCS = friend-alsa-capture.cc friend-alsa-playback.cc friend-exceptions.cc \
 OBJS = $(SRCS:.cc=.o)
 
 all: friend-filter-main
+
+install: friend-filter-main
+	install -d $(BINDIR)
+	install -m 0755 friend-filter-main $(BINDIR)
+
+clean:
+	rm friend-filter-main
+	rm $(OBJS)
 
 friend-filter-main: $(OBJS)
 
