@@ -1,3 +1,19 @@
+/*
+ * Places incoming samples from a thread-safe queue into a buffer and plays them
+ * from the soundcard.
+ *
+ * This module should run MainLoop() in its own thread. Example:
+ *
+ * ```
+ * #include <thread>
+ *
+ * auto input = new Friend::Output(queue);
+ * std::thread output_thread(std::bind(&Friend::Output::MainLoop, output));
+ * ```
+ *
+ */
+
+#ifndef __FRIEND_INPUT_H
 #ifndef __FRIEND_OUTPUT_H
 #define __FRIEND_OUTPUT_H
 

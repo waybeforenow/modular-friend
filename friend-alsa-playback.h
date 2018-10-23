@@ -1,3 +1,10 @@
+/*
+ * Wrapper class for snd_pcm_writei(). Initializes and configures the necessary
+ * ALSA data structures upon instantiation.
+ *
+ */
+
+#include "friend-alsa-capture.h"
 #ifndef __FRIEND_ALSA_PLAYBACK_H
 #define __FRIEND_ALSA_PLAYBACK_H
 

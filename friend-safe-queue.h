@@ -1,3 +1,8 @@
+/*
+ * A thread-safe queue structure with two independent queues.
+ *
+ */
+
 #ifndef __FRIEND_SAFE_QUEUE_H
 #define __FRIEND_SAFE_QUEUE_H
 
@@ -7,14 +12,12 @@
 
 namespace Friend {
 
-// A threadsafe-queue.
 template <class T>
 class SafeQueue {
  public:
   SafeQueue(void) : leftq(), rightq(), leftm(), rightm(), leftc(), rightc() {}
   ~SafeQueue(void) = default;
 
-  // Add an element to the queue.
   void enqueue_left_channel(const T sample) {
     std::lock_guard<std::mutex> lock(leftm);
     leftq.push(sample);
@@ -30,7 +33,6 @@ class SafeQueue {
   const T dequeue_left_channel() {
     std::unique_lock<std::mutex> lock(leftm);
     while (leftq.empty()) {
-      // release lock as long as the wait and reaquire it afterwards.
       leftc.wait(lock);
     }
     const T val = leftq.front();
@@ -41,7 +43,6 @@ class SafeQueue {
   const T dequeue_right_channel() {
     std::unique_lock<std::mutex> lock(rightm);
     while (rightq.empty()) {
-      // release lock as long as the wait and reaquire it afterwards.
       rightc.wait(lock);
     }
     const T val = rightq.front();

@@ -111,8 +111,8 @@ class Filter {
   FilterStageD<T>* stageD;
 
  public:
-  Filter(float freq, float res, float sr = 44100)
-      : c(new FilterConstants(sr, freq, res)),
+  Filter(float* freq, float* res, float sr = 44100)
+      : c(new FilterConstants(sr, *freq, *res)),
         stageA(new FilterStageA<T>(c)),
         stageB(new FilterStageB<T>(c)),
         stageC(new FilterStageC<T>(c)),

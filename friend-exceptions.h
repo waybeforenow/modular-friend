@@ -1,3 +1,9 @@
+/*
+ * Convenience class for throwing exceptions via FRIEND__THROWEXCEPTION or
+ * FRIEND__THROWEXCEPTIONWITHTEXT (see `friend-defaults.h`).
+ *
+ */
+
 #ifndef __FRIEND_EXCEPTIONS_H
 #define __FRIEND_EXCEPTIONS_H
 

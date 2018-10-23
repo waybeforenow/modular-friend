@@ -1,3 +1,18 @@
+/*
+ * Processes incoming samples with Effects::LadderFilter::Filter and places them
+ * into a thread-safe queue.
+ *
+ * This module should run MainLoop() in its own thread. Example:
+ *
+ * ```
+ * #include <thread>
+ *
+ * auto input = new Friend::Input(queue, cutoff, resonance);
+ * std::thread input_thread(std::bind(&Friend::Input::MainLoop, input));
+ * ```
+ *
+ */
+
 #ifndef __FRIEND_INPUT_H
 #define __FRIEND_INPUT_H
 

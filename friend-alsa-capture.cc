@@ -13,45 +13,45 @@ Capture::Capture() : _sample_rate(FRIEND__SAMPLE_RATE) {
 
   if ((err = snd_pcm_open(&_device_handle, FRIEND__ALSA_DEVICE_NAME,
                           SND_PCM_STREAM_CAPTURE, 0)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params_malloc(&hw_params)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params_any(_device_handle, hw_params)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params_set_access(_device_handle, hw_params,
                                           SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params_set_format(_device_handle, hw_params,
                                           FRIEND__PCM_FORMAT)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params_set_rate_near(_device_handle, hw_params,
                                              &_sample_rate, 0)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params_set_channels(_device_handle, hw_params, 2)) <
       0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   if ((err = snd_pcm_hw_params(_device_handle, hw_params)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 
   snd_pcm_hw_params_free(hw_params);
 
   if ((err = snd_pcm_prepare(_device_handle)) < 0) {
-    FRIEND__THROWEXCEPTION;  // XXX
+    FRIEND__THROWEXCEPTION;
   }
 }
 

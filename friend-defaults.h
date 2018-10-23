@@ -1,3 +1,8 @@
+/*
+ * Default preprocessor definitions for modular-friend.
+ *
+ */
+
 #ifndef __FRIEND_DEFAULTS_H
 #define __FRIEND_DEFAULTS_H
 

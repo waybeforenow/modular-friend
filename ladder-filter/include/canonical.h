@@ -1,3 +1,12 @@
+/*
+ * Portions of this code were adapted from the Soundpipe module `moogladder`[1],
+ * which was adapted from the Csound opcode `moogladder`[2].
+ * [1]
+ * https://github.com/PaulBatchelor/Soundpipe/blob/master/modules/moogladder.c
+ * [2] https://github.com/csound/examples/blob/master/opcode_demos/luamoog.csd
+ *
+ */
+
 #ifndef __FRIEND_EFFECTS_LADDER_FILTER_LADDER_CANONICAL_H
 #define __FRIEND_EFFECTS_LADDER_FILTER_LADDER_CANONICAL_H
 

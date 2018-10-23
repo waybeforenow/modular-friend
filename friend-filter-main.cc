@@ -18,6 +18,11 @@
 #define SIGUSR2 12
 #endif
 
+/*
+ * default exception handler - prints filename/line number and terminates the
+ * program
+ *
+ */
 void on_terminate() noexcept {
   if (auto cur_ex = std::current_exception()) {
     try {
@@ -34,6 +39,11 @@ void on_terminate() noexcept {
   exit(1);
 }
 
+/*
+ * allows the cutoff and resonance to be modified in real time by sending
+ * SIGUSR1 (+100Hz) and SIGUSR2 (-100Hz) to the running process
+ *
+ */
 float* cutoff = new float(1000);
 float* resonance = new float(0.6f);
 
@@ -53,6 +63,7 @@ void cutoff_mod(int sig) {
   }
 }
 
+// run the ladder filter - process incoming samples and play them back
 int main(int argc, char** argv) {
   std::set_terminate(&on_terminate);
 

@@ -65,8 +65,10 @@ class Filter {
   const size_t n;
 
  public:
-  Filter(float freq, float res, float sr = 44100, size_t poles = 4)
-      : c(new FilterConstants(sr, freq, res)), final_stage(nullptr), n(poles) {
+  Filter(float* freq, float* res, float sr = 44100, size_t poles = 4)
+      : c(new FilterConstants(sr, *freq, *res)),
+        final_stage(nullptr),
+        n(poles) {
     for (size_t i = 0; i < n; i++) {
       final_stage = new FilterStage(c, final_stage);
     }
